@@ -40,10 +40,10 @@ let s:gui0A        = "ffcc1b"
 let g:base16_gui0A = "ffcc1b"
 let s:gui0B        = "7fc06e"
 let g:base16_gui0B = "7fc06e"
-let s:gui0C        = "5dd7b9"
-let g:base16_gui0C = "5dd7b9"
-let s:gui0D        = "14747e"
-let g:base16_gui0D = "14747e"
+let s:gui0C        = "14747e"
+let g:base16_gui0C = "14747e"
+let s:gui0D        = "5dd7b9"
+let g:base16_gui0D = "5dd7b9"
 let s:gui0E        = "9a70a4"
 let g:base16_gui0E = "9a70a4"
 let s:gui0F        = "c43060"
@@ -107,17 +107,17 @@ if has("nvim")
   let g:terminal_color_1 =  "#ff5a67"
   let g:terminal_color_2 =  "#7fc06e"
   let g:terminal_color_3 =  "#ffcc1b"
-  let g:terminal_color_4 =  "#14747e"
+  let g:terminal_color_4 =  "#5dd7b9"
   let g:terminal_color_5 =  "#9a70a4"
-  let g:terminal_color_6 =  "#5dd7b9"
+  let g:terminal_color_6 =  "#14747e"
   let g:terminal_color_7 =  "#a1a19a"
   let g:terminal_color_8 =  "#6c8b91"
   let g:terminal_color_9 =  "#ff5a67"
   let g:terminal_color_10 = "#7fc06e"
   let g:terminal_color_11 = "#ffcc1b"
-  let g:terminal_color_12 = "#14747e"
+  let g:terminal_color_12 = "#5dd7b9"
   let g:terminal_color_13 = "#9a70a4"
-  let g:terminal_color_14 = "#5dd7b9"
+  let g:terminal_color_14 = "#14747e"
   let g:terminal_color_15 = "#fafaf8"
   let g:terminal_color_background = g:terminal_color_0
   let g:terminal_color_foreground = g:terminal_color_5
@@ -131,17 +131,17 @@ elseif has("terminal")
         \ "#ff5a67",
         \ "#7fc06e",
         \ "#ffcc1b",
-        \ "#14747e",
-        \ "#9a70a4",
         \ "#5dd7b9",
+        \ "#9a70a4",
+        \ "#14747e",
         \ "#a1a19a",
         \ "#6c8b91",
         \ "#ff5a67",
         \ "#7fc06e",
         \ "#ffcc1b",
-        \ "#14747e",
-        \ "#9a70a4",
         \ "#5dd7b9",
+        \ "#9a70a4",
+        \ "#14747e",
         \ "#fafaf8",
         \ ]
 endif
@@ -290,6 +290,7 @@ if has("nvim-0.8.0")
   call <sid>hi("@field",            s:gui08, "", s:cterm08, "", "", "")
   call <sid>hi("@property",         s:gui08, "", s:cterm08, "", "", "")
   call <sid>hi("@namespace",        s:gui05, "", s:cterm05, "", "italic", "")
+  call <sid>hi("@variable",         s:gui05, "", s:cterm05, "", "", "")
   call <sid>hi("@variable.builtin", s:gui05, "", s:cterm05, "", "italic", "")
   call <sid>hi("@text.reference",   s:gui08, "", s:cterm08, "", "", "")
   call <sid>hi("@text.uri",         s:gui08, "", s:cterm08, "", "italic", "")
@@ -373,7 +374,53 @@ if has("nvim-0.8.0")
   call <sid>hi("@type",                                s:gui0A, "", s:cterm0A, "", "", "")
   call <sid>hi("@type.definition",                     s:gui0E, "", s:cterm0E, "", "", "")
   call <sid>hi("@type.qualifier",                      s:gui0E, "", s:cterm0E, "", "", "")
+
+  " Nvim 0.10 migration
+  if has("nvim-0.10.0")
+    hi! link @parameter             @variable.parameter
+    hi! link @float                 @number.float
+    hi! link @symbol                @string.special.symbol
+    hi! link @string.regex          @string.regexp
+    hi! link @text.strong           @markup.strong
+    hi! link @text.emphasis         @markup.italic
+    hi! link @text.underline        @markup.underline
+    hi! link @text.strike           @markup.strikethrough
+    hi! link @text.title            @markup.heading
+    hi! link @text.quote            @markup.quote
+    hi! link @text.uri              @markup.link.url
+    hi! link @text.math             @markup.math
+    hi! link @text.environment      @markup.environment
+    hi! link @text.environment.name @markup.environment.name
+    hi! link @text.reference        @markup.link
+    hi! link @text.literal          @markup.raw
+    hi! link @text.literal.block    @markup.raw.block
+    hi! link @string.special        @markup.link.label
+    hi! link @punctuation.special   @markup.list
+
+    hi! link @method                @function.method
+    hi! link @method.call           @function.method.call
+    hi! link @text.todo             @comment.todo
+    hi! link @text.danger           @comment.error
+    hi! link @text.warning          @comment.warning
+    hi! link @text.note             @comment.hint
+    hi! link @text.note             @comment.info
+    hi! link @text.note             @comment.note
+    hi! link @text.note             @comment.ok
+    hi! link @text.diff.add         @diff.plus
+    hi! link @text.diff.delete      @diff.minus
+    hi! link @text.diff.change      @diff.delta
+    hi! link @text.uri              @string.special.url
+    hi! link @preproc               @keyword.directive
+    hi! link @storageclass          @keyword.storage
+    hi! link @define                @keyword.directive
+    hi! link @conditional           @keyword.conditional
+    hi! link @debug                 @keyword.debug
+    hi! link @exception             @keyword.exception
+    hi! link @include               @keyword.import
+    hi! link @repeat                @keyword.repeat
+  endif
 endif
+
 
 " Standard highlights to be used by plugins
 if has("patch-8.0.1038")
@@ -729,6 +776,13 @@ if has("nvim")
   hi! link LspReferenceText   ReferenceText
   hi! link LspReferenceRead   ReferenceRead
   hi! link LspReferenceWrite  ReferenceWrite
+
+  "  https://neovim.io/doc/user/news-0.10.html
+  if has("nvim-0.10.0")
+    hi! link WinSeparator VertSplit
+    hi! link FloatBorder  WinSeparator
+    hi! link NormalFloat  Pmenu
+  endif
 endif
 
 " Java
